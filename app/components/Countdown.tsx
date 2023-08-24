@@ -48,9 +48,9 @@ const Countdown = () => {
         {/* <p>{remainingTime.hours.toString().padStart(2, "0")}</p>:
         <p>{remainingTime.minutes.toString().padStart(2, "0")}</p>:
         <p>{remainingTime.seconds.toString().padStart(2, "0")}</p> */}
-        <p className="text-hite font-semibold text-center text-lg">3:</p>
-        <p className="text-hite font-semibold text-center text-lg">30:</p>
-        <p className="text-hite font-semibold text-center text-lg">33</p>
+        <p className="font-semibold text-center text-lg">3:</p>
+        <p className="font-semibold text-center text-lg">30:</p>
+        <p className="font-semibold text-center text-lg">33</p>
       </div>
 
       <Button name="Close" onClick={() => closeSignupModal(true)} />
