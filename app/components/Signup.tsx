@@ -1,103 +1,70 @@
-"use client"
-import React, { useState } from "react";
-import { errorType, formType } from "../types/formType";
-import { handleStepValidation } from "../utils/handleStepValidation";
-import ModalTitle from "./ModalTitle";
+"use client";
+import React from "react";
+import ImageLight from "../assets/img/create-account-office.jpeg";
+import ImageDark from "../assets/img/create-account-office-dark.jpeg";
+import Image from "next/image";
+import Link from "next/link";
 import Verification from "./Verification";
-import Register from "./Register";
-import SubmitForm from "./SubmitForm";
-import { initialErrorState, initialState } from "../utils/constants";
-import useModalStore from "../store/modalStore";
+import useFormStore from "../store/formStore";
+import SignupStepOne from "./SignupStepOne";
+import CreateAccount from "./CreateAccount";
 
-const MultiStepSignupForm = () => {
-
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState(initialState);
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
-  const [otp, setOtp] = useState<string>("");
-  const [errors, setErrors] = useState(initialErrorState);
-
-  const onChange = (
-    // e:
-    //   | React.ChangeEvent<HTMLInputElement>
-    //   | React.ChangeEventHandler<HTMLSelectElement>
-  e: any
-  ) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleNext = () => {
-    const stepErrors = handleStepValidation(formData, phoneNumber, otp, step);
-    if (Object.keys(stepErrors).length === 0) {
-      setErrors(initialErrorState);
-      setStep(step + 1);
-    } else {
-      setErrors(stepErrors);
-    }
-  };
-
-  const handlePrev = () => {
-    setStep(step - 1);
-  };
-
-  const handleSubmit = () => {
-    const stepErrors = handleStepValidation(formData, phoneNumber, otp, step);
-    if (Object.keys(stepErrors).length === 0) {
-      //form submission to the backend API
-      console.log("Form submitted");
-    } else {
-      setErrors(stepErrors);
-    }
-  };
-
-  const closeSignupModal = useModalStore((state) => state.closeSignupModal);
+function Signup() {
+  const { step } = useFormStore();
 
   return (
-    <div
-      className={
-        "w-3/5 md:w-2/5 bg-black flex flex-col justify-center items-center"
-      }
-    >
-      <ModalTitle title="Signup" handleClose={closeSignupModal}/>
-      {step === 1 && (
-        <div>
-          <Register
-            formData={formData}
-            handleNext={handleNext}
-            onChange={onChange}
-            phoneNumber={phoneNumber}
-            setPhoneNumber={setPhoneNumber}
-            errors={errors}
-          />
+    <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
+      <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
+        <div className="flex flex-col overflow-y-auto md:flex-row">
+          <div className="h-32 md:h-auto md:w-1/2">
+            <Image
+              aria-hidden="true"
+              className="object-cover w-full h-full dark:hidden"
+              src={ImageLight}
+              alt="Office"
+            />
+            <Image
+              aria-hidden="true"
+              className="hidden object-cover w-full h-full dark:block"
+              src={ImageDark}
+              alt="Office"
+            />
+          </div>
+          <main className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+            <div className="w-full">
+              <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">
+                Create account
+              </h1>
+
+              {step === 1 && (
+                <div>
+                  <SignupStepOne />
+                </div>
+              )}
+              {step === 2 && (
+                <div>
+                  <Verification />
+                </div>
+              )}
+              {step === 3 && (
+                <div>
+                  <CreateAccount />
+                </div>
+              )}
+              <p className="mt-4">
+                <Link
+                  className="text-sm font-medium text-blue-500 dark:text-purple-400 hover:underline"
+                  href="/login"
+                >
+                  Already have an account? Login
+                </Link>
+              </p>
+            </div>
+          </main>
         </div>
-      )}
-      {step === 2 && (
-        <div>
-          <Verification
-            otp={otp}
-            setOtp={setOtp}
-            handleNext={handleNext}
-            handlePrev={handlePrev}
-          />
-          {errors.otp && <p className="text-red-500 py-3">{errors.otp}</p>}
-        </div>
-      )}
-      {step === 3 && (
-        <div>
-          <SubmitForm
-            formData={formData}
-            handlePrev={handlePrev}
-            handleSubmit={handleSubmit}
-            onChange={onChange}
-            errors={errors}
-          />
-        </div>
-      )}
+      </div>
     </div>
   );
-};
+}
 
-export default MultiStepSignupForm;
+export default Signup;

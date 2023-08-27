@@ -1,25 +1,24 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
+const defaultTheme = require("tailwindcss/defaultTheme");
+const windmill = require("@windmill/react-ui/config");
 
-const config: Config = {
+const config: Config = windmill({
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-          locked: "linear-gradient(0deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.75) 100%), url('../public/locked.svg')",
+      fontFamily: {
+        sans: ["Inter", ...defaultTheme.fontFamily.sans],
       },
-      colors: {
-        primary: "#FDC804",
-        secondary: "#FFCA55B0"
-      }
+      boxShadow: {
+        bottom:
+          "0 5px 6px -7px rgba(0, 0, 0, 0.6), 0 2px 4px -5px rgba(0, 0, 0, 0.06)",
+      },
     },
   },
   plugins: [],
-}
-export default config
+});
+export default config;

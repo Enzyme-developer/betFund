@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Input from "./Input";
 import Button from "./Button";
 import ModalTitle from "./ModalTitle";
 import useModalStore from "../store/modalStore";
 import ModalText from "./ModalText";
+import CountdownTimer from "../utils/calculateTime";
 
 const Countdown = () => {
   const closeSignupModal = useModalStore((state) => state.closeSignupModal);
+
+  useEffect(() => {
+    CountdownTimer()
+  }, [])
+  
 
   return (
     <div

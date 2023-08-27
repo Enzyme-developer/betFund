@@ -1,37 +1,69 @@
-import Otp from "./Otp";
-import ModalText from "./ModalText";
-import ModalTitle from "./ModalTitle";
-import { cn } from "@/lib/utils";
-import Button from "./Button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import useFormStore from "../store/formStore";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import OTPInput from "react-otp-input";
 
-type otpProp = {
-  otp: string;
-  setOtp: React.Dispatch<React.SetStateAction<string>>
-  handleNext: () => void;
-  handlePrev: () => void;
-};
+const Verification = () => {
+  const { formData, setFormData, setStep } = useFormStore();
 
-const Verification = ({ handleNext, handlePrev, otp, setOtp }: otpProp) => {
+  const formSchema = z.object({
+    otp: z.string().min(4).max(4),
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      otp: formData?.otp,
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    setFormData({
+      ...formData,
+      otp: values.otp,
+    });
+    setStep(3);
+  }
+
   return (
-    <div
-      className={cn(
-        "w-full px-6 py-4 bg-black flex flex-col justify-center items-center"
-      )}
-    >
-      <ModalText
-        heading="Check your sms for code"
-        body="Note: 080123456789 will be used for withdrawal verification"
-      />
-
-      <div className="w-3/5 flex flex-col space-y-4 justify-center items-center mb-6">
-        <Otp otp={otp} setOtp={setOtp}  />
-      </div>
-
-      <div className="flex space-x-4 mb-4">
-        <Button name="Previous" onClick={handlePrev} />
-        <Button name="Next" onClick={handleNext} />
-      </div>
-    </div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="otp"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="mb-4">OTP</FormLabel>
+              <FormControl>
+                <OTPInput
+                  {...field}
+                  numInputs={4}
+                  inputType="number"
+                  renderSeparator={<span></span>}
+                  renderInput={(props) => <input {...props} />}
+                  inputStyle="inputStyle"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button className="mr-4" onClick={() => setStep(1)}>
+          Previous
+        </Button>
+        <Button type="submit">Next</Button>
+      </form>
+    </Form>
   );
 };
 

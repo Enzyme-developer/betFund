@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from 'react';
-
 export default function CountdownTimer() {
-        const closingTime = new Date();
-        closingTime.setHours(22, 0, 0);
-      const currentTime = new Date();
-      const timeDiff = Number(closingTime) - Number(currentTime);
+  const stopTime = new Date();
+  stopTime.setHours(22, 0, 0);
 
-      if (timeDiff <= 0) {
-        return
-      } else {
-        const hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
-        const seconds = Math.floor((timeDiff / 1000) % 60);
-      }
-    };
+  const startTime = new Date();
+  startTime.setHours(8, 0, 0);
 
+  const currentTime = new Date();
+
+    const remainingTime = 8 + (24 - Number(currentTime));
+    console.log(remainingTime)
+
+  if (currentTime >= startTime  && currentTime < stopTime) {
+    return;
+  } else {
+    const hours = Math.floor((remainingTime / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((remainingTime / (1000 * 60)) % 60);
+    const seconds = Math.floor((remainingTime / 1000) % 60);
+    console.log(hours)
+  }
+}

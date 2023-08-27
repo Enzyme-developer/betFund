@@ -4,15 +4,15 @@ import React, { useState } from "react";
 import { nunito } from "../utils/fonts";
 import { Button } from "@/components/ui/button";
 import Modal from "./Modal";
-import Signup from "./Signup";
+import Signup from "./SignupPrev";
 import Otp from "./Otp";
 import Verification from "./Verification";
-import MultiStepSignupForm from "./Signup";
+import MultiStepSignupForm from "./SignupPrev";
 import useModalStore from "../store/modalStore";
 
 const Cta = () => {
-const openSignupModal = useModalStore((state) => state.openSignupModal)
-const openLoginModal = useModalStore((state) => state.openLoginModal)
+  const openSignupModal = useModalStore((state) => state.openSignupModal);
+  const openLoginModal = useModalStore((state) => state.openLoginModal);
   return (
     <div className="bg-black w-[365px] rounded-[14px] my-8 flex flex-col space-y-4 p-3">
       <p
