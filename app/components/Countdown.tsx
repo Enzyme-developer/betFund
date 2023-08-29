@@ -1,65 +1,45 @@
-import React, { useEffect } from "react";
-import Input from "./Input";
-import Button from "./Button";
-import ModalTitle from "./ModalTitle";
-import useModalStore from "../store/modalStore";
-import ModalText from "./ModalText";
-import CountdownTimer from "../utils/calculateTime";
+'use client'
+import React, { useEffect, useState } from 'react';
 
 const Countdown = () => {
-  const closeSignupModal = useModalStore((state) => state.closeSignupModal);
+  const [countdown, setCountdown] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
-    CountdownTimer()
-  }, [])
-  
+    // Calculate the target time for the store to open (8 AM next day)
+    const targetOpenTime = new Date();
+    const targetClosingTime = new Date();
+    // targetOpenTime.setDate(targetOpenTime.getDate() + 1);
+    targetOpenTime.setHours(8, 0, 0, 0); // Set time to 8:00 AM
+    targetClosingTime.setHours(22, 0, 0, 0); 
+
+    const updateCountdown = () => {
+      const currentTime = new Date();
+      const timeDifference = Number(targetOpenTime.setDate(targetOpenTime.getDate() + 1)) - Number(currentTime);
+
+      if (currentTime > targetClosingTime || currentTime < targetOpenTime) {
+        const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+        setCountdown({ hours, minutes, seconds });
+      } else {
+        // Store is open, countdown should stop
+        clearInterval(interval);
+      }
+    };
+
+    // Update countdown every second
+    const interval = setInterval(updateCountdown, 1000);
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div
-      className={
-        "w-4/5 md:w-[500px] bg-black flex flex-col justify-center items-center pb-4"
-      }
-    >
-      <ModalTitle title="Try again later" handleClose={closeSignupModal} />
-
-      <div className="w-3/5 px-6 py-8 bg-black flex flex-col justify-center items-center mb-1 ">
-        <ModalText heading="" body="You can place bet between:" />
-
-        <div className="mb-3 flex space-x-6 justify-between w-full">
-          <Input
-            type="text"
-            name="start"
-            label="Start time"
-            value="8:00am"
-            bgColor="#FFCA55B0"
-            labelColor="#ffffff"
-          />
-
-          <Input
-            type="text"
-            name="stop"
-            label="Stop time"
-            value="10:00pm"
-            bgColor="#FFCA55B0"
-            labelColor="#ffffff"
-          />
-        </div>
-      </div>
-
-      <p className="text-lg font-semibold text-center text-white">
-        Betting starts in
+    <div>
+      <p>
+        Store is closing in {countdown.hours} hours, {countdown.minutes} minutes, and {countdown.seconds} seconds.
       </p>
-
-      <div className="my-4 w-3/5 bg-[#FFCA55B0] text-white py-2 px-4 flex space-x-2 items-center justify-center">
-        {/* <p>{remainingTime.hours.toString().padStart(2, "0")}</p>:
-        <p>{remainingTime.minutes.toString().padStart(2, "0")}</p>:
-        <p>{remainingTime.seconds.toString().padStart(2, "0")}</p> */}
-        <p className="font-semibold text-center text-lg">3:</p>
-        <p className="font-semibold text-center text-lg">30:</p>
-        <p className="font-semibold text-center text-lg">33</p>
-      </div>
-
-      <Button name="Close" onClick={() => closeSignupModal(true)} />
     </div>
   );
 };

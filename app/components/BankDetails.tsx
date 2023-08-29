@@ -1,61 +1,91 @@
-import React from "react";
-import Input from "./Input";
-import Button from "./Button";
-import { bankErrorType, bankType } from "../types/formType";
-import ModalText from "./ModalText";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import useFormStore from "../store/formStore";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-type SubmitProp = {
-  handleNext: () => void;
-  //   onChange: ChangeEventHandler<HTMLInputElement> |  React.ChangeEventHandler<HTMLSelectElement>;
-  onChange: any;
-  formData: bankType;
-  errors: bankErrorType;
-};
+const BankDetails = () => {
+  const { cashoutData, setCashoutData, setCashoutStep } = useFormStore();
 
-const BankDetails = ({
-  formData,
-  onChange,
-  errors,
-  handleNext,
-}: SubmitProp) => {
+  const formSchema = z.object({
+    name: z.string().min(2),
+    bankName: z.string().min(2),
+    accountNumber: z.string().min(2, { message: "Account Number is Required" }),
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: cashoutData?.name,
+      bankName: cashoutData?.bankName,
+      accountNumber: cashoutData?.accountNumber,
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    setCashoutData({
+      ...cashoutData,
+      name: values.name,
+      bankName: values.bankName,
+      accountNumber: values.accountNumber,
+    });
+    setCashoutStep(2);
+  }
+
   return (
-    <div
-      className={
-        "w-full px-6 py-4 bg-black flex flex-col justify-center items-center"
-      }
-    >
-      <ModalText heading="#125,000" body="50% Profit split will apply" />
-      <div className="flex flex-col items-center space-y-4 w-full">
-        <Input
-          type="text"
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
           name="name"
-          label="First and last Name"
-          value={formData?.name}
-          onChange={onChange}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="John Doe" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        {errors.name && <p className="text-red-500">{errors.name}</p>}
-        <Input
-          type="text"
+        <FormField
+          control={form.control}
           name="bankName"
-          label="Bank Name"
-          value={formData?.bankName}
-          onChange={onChange}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Bank Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Bank name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        {errors.bankName && <p className="text-red-500">{errors.bankName}</p>}
-        <Input
-          type="number"
+        <FormField
+          control={form.control}
           name="accountNumber"
-          label="Account Number"
-          value={formData?.accountNumber}
-          onChange={onChange}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Account Number</FormLabel>
+              <FormControl>
+                <Input placeholder="0085363883" type="number" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        {errors.accountNumber && (
-          <p className="text-red-500">{errors.accountNumber}</p>
-        )}
-
-        <Button name="Next" onClick={handleNext} />
-      </div>
-    </div>
+        <Button type="submit">Next</Button>
+      </form>
+    </Form>
   );
 };
 

@@ -1,10 +1,15 @@
+"use client";
 import React from "react";
 import BaseButton from "./reusables/Button";
 import BaseSection from "./base/BaseSection";
 import ListItem from "./components/ListItem";
 import Step from "./reusables/Step";
 import Accordion from "./base/Accordion";
+import Navbar from "./base/Navbar";
+import Footer from "./base/Footer";
 import Image from "next/image";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Plans from "./components/Plans";
 
 export default function Home() {
   const trendings = [
@@ -136,49 +141,45 @@ export default function Home() {
   const steps = [
     {
       img: "sign-up.png",
-      title: "Sign Up",
+      title: "Join the Action",
       description:
-        "Sign up for your free NEFA Wallet on web, iOS or Android and follow our easy process to set up your profile",
+        "Sign up for your free betting account on our platform, whether you're on the web or using our mobile apps. Setting up your profile is quick and easy.",
     },
     {
       img: "fund.png",
-      title: "Fund",
+      title: "Deposit Funds",
       description:
-        "Choose your preferred payment method such as bank transfer or credit card to top up your NEFA Wallet",
+        "Choose your preferred payment method, whether it's credit card, bank transfer, or cryptocurrencies, to top up your betting wallet securely.",
     },
     {
       img: "buy-crypto.png",
-      title: "Buy Crypto",
+      title: "Place Bets",
       description:
-        "Buy Bitcoin or Ethereum, then securely store it in your Wallet or send it on easily to your friends anywhere",
+        "Bet on your favorite sports events, teams, or casino games. Our platform ensures your bets are secure and seamless, so you can enjoy the thrill of betting.",
     },
   ];
 
   const accordions = [
     {
-      title: "Why should I choose NEFA?",
+      title: "Why should I choose MyBetFund?",
       description:
-        "We're industry pioneers, having been in the cryptocurrency industry since 2016. We've facilitated more than 21 billion USD worth of transactions on our exchange for customers in over 40 countries. Today, we're trusted by over 8 million customers around the world and have received praise for our easy-to-use app, secure wallet, and range of features.",
+        "Discover the MyBetFund advantage. We're not just another betting platform; we're pioneers in the industry. Since 2016, we've been revolutionizing the world of online betting. With over $21 billion in transactions across 40 countries, our experience speaks volumes. Join our community of 8 million satisfied customers worldwide and experience the ease of our user-friendly app, the security of our wallet, and the range of features we offer.",
     },
     {
-      title: "How secure is NEFA?",
+      title: "How secure is MyBetFund?",
       description:
-        "We're industry pioneers, having been in the cryptocurrency industry since 2016. We've facilitated more than 21 billion USD worth of transactions on our exchange for customers in over 40 countries. Today, we're trusted by over million customers around the world and have received praise for our easy-to-use app, secure wallet, and range of features.",
+        "Security is our top priority. As industry pioneers with roots dating back to 2016, NEFA has facilitated over $21 billion in transactions for customers in more than 40 countries. Trusted by millions globally, we're known for our user-friendly app, secure wallet, and comprehensive features that ensure your peace of mind.",
     },
     {
-      title: "Do I have to buy a whole Bitcoin?",
+      title: "Do I have to bet big?",
       description:
-        "We're industry pioneers, having been in the cryptocurrency industry since 2016. We've facilitated more than 21 billion USD worth of transactions on our exchange for customers in over 40 countries. Today, we're trusted by over million customers around the world and have received praise for our easy-to-use app, secure wallet, and range of features.",
-    },
-    {
-      title: "How do I actually buy Bitcoin?",
-      description:
-        "We're industry pioneers, having been in the cryptocurrency industry since 2016. We've facilitated more than 21 billion USD worth of transactions on our exchange for customers in over 40 countries. Today, we're trusted by over million customers around the world and have received praise for our easy-to-use app, secure wallet, and range of features.",
+        "There's no need to go all-in. At MyBetFund, you're not required to place hefty bets to get started. We provide flexibility and convenience, so you can indulge in the excitement of betting without restrictions.",
     },
   ];
 
   return (
     <div className="App">
+      <Navbar />
       {/* <!-- Hero section --> */}
       <section id="hero" className="w-full pb-24">
         <BaseSection>
@@ -188,16 +189,17 @@ export default function Home() {
               data-aos-once="true"
               className="text-base text-gradient font-semibold uppercase"
             >
-              Sign Up Today
+              We Fund. You Bet. We Pay You
             </span>
             <h1
               data-aos="fade-right"
               data-aos-once="true"
               className="text-[2.5rem] sm:text-5xl xl:text-6xl font-bold leading-tight capitalize sm:pr-8 xl:pr-10"
             >
-              The World is{" "}
-              <span className="text-header-gradient">Fastest Growing</span>{" "}
-              Crypto Web App
+              UP TO ₦‎801,000 {" "}
+              <span className="text-header-gradient">
+                Free betting Money
+              </span>{" "}
             </h1>
             <p
               data-aos="fade-down"
@@ -205,8 +207,9 @@ export default function Home() {
               data-aos-delay="300"
               className="paragraph hidden sm:block"
             >
-              Buy and sell 200+ cryptocurrencies with 20+ flat currencies using
-              bank transfers or your credit/debit card.
+              Bet on your favorite sports with our user-friendly platform. We
+              cover a wide range of sports and events, providing you with
+              exciting betting opportunities.
             </p>
             <div
               data-aos="fade-up"
@@ -214,11 +217,15 @@ export default function Home() {
               data-aos-delay="700"
               className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mt-2"
             >
-              <BaseButton style="max-w-full px-8 py-4 bg-gradient-to-r from-[#468ef9] to-[#0c66ee] border border-[#0c66ee] text-white">
+              <BaseButton
+                style="max-w-full px-8 py-4 bg-gradient-to-r from-[#468ef9] to-[#0c66ee] border border-[#0c66ee] text-white"
+                href={""}
+              >
                 Get Started
               </BaseButton>
             </div>
           </div>
+
           <div className="hidden sm:block col-span-12 lg:col-span-6">
             <div className="w-full">
               <Image
@@ -262,11 +269,11 @@ export default function Home() {
       </section>
 
       {/* <!-- Crypto statistic section --> */}
-      <section
+      {/* <section
         data-aos="fade-up"
         className="max-w-screen-xl mx-2 sm:mx-auto px-4 sm:px-6 lg:px-0 py-6 pb-20 sm:py-8 rounded-[2.25rem] sm:rounded-xl bg-white shadow-lg sm:shadow-md transform lg:-translate-y-12"
       >
-        {/* <div className="w-full flex flex-col lg:flex-row items-center justify-center">
+        <div className="w-full flex flex-col lg:flex-row items-center justify-center">
           <LandingCryptoStatistic
             title="🔥 Trending"
             datasets={trendings}
@@ -282,8 +289,8 @@ export default function Home() {
             datasets={recents}
             style="lg:px-8"
           />
-        </div> */}
-      </section>
+        </div>
+      </section> */}
 
       {/* <!-- Buy and trade section --> */}
       <section className="w-full my-24">
@@ -302,12 +309,13 @@ export default function Home() {
             className="col-span-12 lg:col-span-6 mt-4 xl:mt-20 space-y-6 px-4"
           >
             <h2 className="text-4xl font-semibold sm:pr-8 xl:pr-12">
-              Buy & trade on the <br className="hidden sm:block" />
-              original crypto exchange.
+              Place your bets and trade on the{" "}
+              <br className="hidden sm:block" />
+              leading sports betting platform.
             </h2>
             <p className="paragraph">
-              Buy now and get 40% extra bonus Minimum pre-sale amount 25 Crypto
-              Coin. We accept BTC crypto-currency
+              Bet now and receive a 40% extra bonus on a minimum pre-sale amount
+              of 25 Crypto Coins. We proudly accept BTC cryptocurrency.
             </p>
             {/* <div className="space-y-6 lg:pr-12">
                 <LandingExchange
@@ -347,6 +355,17 @@ export default function Home() {
         </BaseSection>
       </section>
 
+      <Card className="w-4/5 mx-auto bg-blue-500 h-fit text-center text-white mb-4">
+        <CardHeader>
+          <CardTitle>How it works</CardTitle>
+        </CardHeader>
+        <CardContent>
+          Pass the free test by winning 2 out of 3 bets to get funded instantly.
+          You will be paid 50% of your earning then moved to higher stages.All
+          losses are on us.
+        </CardContent>
+      </Card>
+
       {/* <!-- Partners section --> */}
       <section className="bg-partner relative max-w-full sm:mx-6 my-24 shadow sm:rounded-2xl overflow-hidden">
         <div className="w-full px-6 sm:px-0 py-16 flex flex-col items-center justify-center space-y-4 text-center">
@@ -382,6 +401,10 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="w-full my-16 p-4 md:p-6">
+        <Plans />
+      </section>
+
       {/* <!-- Credit card section --> */}
       <section className="w-full my-36">
         <BaseSection data-aos="fade-down">
@@ -396,27 +419,35 @@ export default function Home() {
           </div>
           <div className="col-span-12 lg:col-span-5 space-y-6 px-4 sm:px-6 mt-20">
             <h2 className="text-4xl font-semibold">
-              Introducing the <span className="text-header-gradient">NEFA</span>{" "}
-              Credit Card
+              Introducing the{" "}
+              <span className="text-header-gradient">MyBetFund</span> Credit
+              Card
             </h2>
             <p className="paragraph">
-              Subject to cardholder and rewards terms which will be available at
-              application.
+              Subject to cardholder and rewards terms, soon to be accessible
+              upon application.
             </p>
             <ul className="space-y-4 sm:space-y-2">
-              <ListItem title="Up to 3% back on purchases"> </ListItem>
-              <ListItem title="Earn rewards in bitcoin or any crypto on NEFA">
+              <ListItem title="Get up to 3% cashback on bets and wagers">
                 {" "}
               </ListItem>
-              <ListItem title="No annual fee"> </ListItem>
+              <ListItem title="Earn rewards in bitcoin or any crypto on MyBetFund">
+                {" "}
+              </ListItem>
+              <ListItem title="No annual fee - just pure betting enjoyment">
+                {" "}
+              </ListItem>
             </ul>
-            <BaseButton href="#" style="w-full sm:max-w-[240px] px-10 py-4 bg-inherit text-gradient border border-[#0c66ee] text-base">
-              Join the waitlist
+            <BaseButton
+              href="/signup"
+              style="w-full sm:max-w-[240px] px-10 py-4 bg-inherit text-gradient border border-[#0c66ee] text-base"
+            >
+              Get STarted
             </BaseButton>
           </div>
         </BaseSection>
       </section>
-      
+
       {/* <!-- Advanced trading tools section --> */}
       <section className="bg-trading-tools relative max-w-full sm:mx-4 my-20 py-16 shadow rounded-2xl overflow-hidden">
         <div className="relative max-w-screen-xl px-4 sm:px-2 mx-auto grid grid-cols-12 gap-x-6">
@@ -434,21 +465,23 @@ export default function Home() {
             className="col-span-12 lg:col-span-6 space-y-8 sm:space-y-6 px-4 sm:px-6 mt-8"
           >
             <h2 className="text-4xl font-semibold">
-              Advanced Trading{" "}
+              Elevate Your Betting Experience{" "}
               <span className="text-header-gradient">Tools</span>
             </h2>
             <div className="space-y-2">
               <h4 className="text-lg font-medium">
-                Professional Access, Non-stop Availability
+                Access the Finest Betting Tools for Pro Gamblers
               </h4>
               <p className="paragraph text-sm xl:text-base">
-                We provide premium access to crypto trading for both individuals
-                and institutions through high liquidity, reliable order
-                execution and constant uptime.
+                At MyBetFund, we offer elite access to betting, serving both
+                individual punters and institutions. Expect top-notch liquidity,
+                impeccable order execution, and uninterrupted service.
               </p>
             </div>
             <div className="space-y-2">
-              <h4 className="text-lg font-medium">A Range of Powerful Apis</h4>
+              <h4 className="text-lg font-medium">
+                Unlock the Potential with Our Robust APIs
+              </h4>
               <p className="paragraph text-sm xl:text-base">
                 Set up your own trading interface or deploy your algorithmic
                 strategy with our high-performance FIX and HTTP APIs. Connect to
@@ -459,14 +492,20 @@ export default function Home() {
               <h4 className="text-lg font-medium">Customer Support</h4>
               <p className="paragraph text-sm xl:text-base">
                 Premium 24/7 support available to all customers worldwide by
-                phone or email. Dedicated account managers for partners.
+                phone or email. Dedicated account managers for customers.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row">
-              <BaseButton href="/signup" style="px-10 py-4 bg-inherit text-gradient border border-[#4A8FF6] text-base">
+              <BaseButton
+                href="/signup"
+                style="px-10 py-4 bg-inherit text-gradient border border-[#4A8FF6] text-base"
+              >
                 Get Started
               </BaseButton>
-              <BaseButton href="#" style="bg-inherit text-[#4A8FF6] px-10 py-4 text-center underline rounded-full hover:shadow-none">
+              <BaseButton
+                href="#"
+                style="bg-inherit text-[#4A8FF6] px-10 py-4 text-center underline rounded-full hover:shadow-none"
+              >
                 Learn More
               </BaseButton>
             </div>
@@ -503,30 +542,33 @@ export default function Home() {
             className="col-span-12 lg:col-span-5 space-y-8 sm:space-y-6 mt-8 xl:px-8"
           >
             <h2 className="text-4xl font-semibold">
-              Industry-leading security from day one
+              Your Safety, Our Priority
             </h2>
             <ul className="space-y-8 sm:space-y-4">
               <ListItem title="Safety, security and compliance">
                 <p className="text-sm text-gray-700 leading-relaxed">
-                  NEFA is a licensed New York trust company that undergoes
-                  regular bank exams and is subject to the cybersecurity audits
-                  conducted by the New York Department of Financial Services.
+                  MyBetFund holds a New York trust company license, subject to
+                  rigorous bank examinations and cybersecurity audits led by the
+                  New York Department of Financial Services. Discover our
+                  steadfast dedication to safeguarding your bets.
                   <span className="underline">Learn more</span> about our
                   commitment to security.
                 </p>
               </ListItem>
               <ListItem title="Hardware security keys">
                 <p className="text-sm text-gray-700 leading-relaxed">
-                  With NEFA you can secure your account with a hardware security
-                  key via WebAuthn.
+                  Fortify your account with hardware security keys through
+                  WebAuthn—a level of protection beyond industry standards.
                 </p>
               </ListItem>
               <ListItem title="SOC Certifications">
                 <p className="text-sm text-gray-700 leading-relaxed">
-                  NEFA is <span className="underline">SOC 1 Type 2</span> and
-                  <span className="underline">SOC 2 Type 2</span> compliant. We
-                  are the world’s first cryptocurrency exchange and custodian to
-                  complete these exams.
+                  MyBetFund is <span className="underline">SOC 1 Type 2</span>{" "}
+                  and
+                  <span className="underline">SOC 2 Type 2</span> compliant
+                  making us the pioneering betting platform and custodian to
+                  pass these evaluations. Your trust is fortified by our
+                  commitment to compliance.
                 </p>
               </ListItem>
             </ul>
@@ -621,6 +663,7 @@ export default function Home() {
           </svg>
         </a>
       </div>
+      <Footer />
     </div>
   );
 }

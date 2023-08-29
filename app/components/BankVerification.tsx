@@ -1,51 +1,74 @@
-import Otp from "./Otp";
-import ModalText from "./ModalText";
-import ModalTitle from "./ModalTitle";
-import { cn } from "@/lib/utils";
-import Button from "./Button";
-import { bankType } from "../types/formType";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import useFormStore from "../store/formStore";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import OTPInput from "react-otp-input";
 
-type otpProp = {
-  otp: string;
-  setOtp: React.Dispatch<React.SetStateAction<string>>;
-  handleSubmit: () => void;
-  handlePrev: () => void;
-  formData: bankType
-};
+const BankVerification = () => {
+  const { cashoutData, setCashoutData, setCashoutStep } = useFormStore();
 
-const BankVerification = ({
-  handleSubmit,
-  handlePrev,
-  formData,
-  otp,
-  setOtp,
-}: otpProp) => {
+  const formSchema = z.object({
+    otp: z.string().min(4).max(4),
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      otp: cashoutData?.otp,
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    setCashoutData({
+      ...cashoutData,
+      otp: values.otp,
+    });
+    //make api call
+  }
+
   return (
-    <div
-      className={cn(
-        "w-full px-6 py-4 bg-black flex flex-col justify-center items-center"
-      )}
-    >
-      <ModalText
-        heading="#125,000"
-        body="Check mobile number 080123456789 for verification code"
-      />
-
-      <div className="w-3/5 flex flex-col space-y-4 justify-center items-center mb-6">
-        <Otp otp={otp} setOtp={setOtp} />
-      </div>
-
-      <div className="flex flex-col text-center mb-4 space-y-2 text-lg text-primary">
-        <p>Bank Name: {formData?.bankName}</p>
-        <p>Account Name: {formData?.name}</p>
-        <p>Account Number: {formData?.accountNumber}</p>
-      </div>
-
-      <div className="flex space-x-4 mb-4">
-        <Button name="Previous" onClick={handlePrev} />
-        <Button name="Submit" onClick={handleSubmit} />
-      </div>
-    </div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="otp"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="mb-4">OTP</FormLabel>
+              <FormControl>
+                <OTPInput
+                  {...field}
+                  numInputs={4}
+                  inputType="number"
+                  renderSeparator={<span></span>}
+                  renderInput={(props) => <input {...props} />}
+                  inputStyle="inputStyle"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button className="mr-4" onClick={() => setCashoutStep(1)}>
+          Previous
+        </Button>
+        <Button type="submit">Submit</Button>
+        <div className="mt-4 flex flex-col text-center text-sm">
+          <span>Name: {cashoutData?.name}</span>
+          <span>Bank Name: {cashoutData?.bankName}</span>
+          <span>Account Number: {cashoutData?.accountNumber}</span>
+        </div>
+      </form>
+    </Form>
   );
 };
 

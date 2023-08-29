@@ -1,21 +1,21 @@
 import { create } from "zustand";
 
 interface ModalState {
-  isSignup: boolean;
-  isLogin: boolean;
-  openSignupModal: (by: boolean) => void;
-  closeSignupModal: (by: boolean) => void;
-  openLoginModal: (by: boolean) => void;
-  closeLoginModal: (by: boolean) => void;
+  cashoutModal: boolean;
+  lostModal: boolean;
+  betModal: boolean;
+  accountModal: boolean;
+  openModal: (by: string) => void;
+  closeModal: (by: string) => void;
 }
 
 const useModalStore = create<ModalState>((set) => ({
-  isSignup: false,
-  isLogin: false,
-  openSignupModal: () => set({ isSignup: true }),
-  closeSignupModal: () => set({ isSignup: false }),
-  openLoginModal: () => set({ isLogin: true }),
-  closeLoginModal: () => set({ isLogin: false }),
+  cashoutModal: false,
+  lostModal: false,
+  betModal: false,
+  accountModal: false,
+  openModal: (modalName) => set({ [modalName]: true }),
+  closeModal: (modalName) => set({ [modalName]: false }),
 }));
 
 export default useModalStore;

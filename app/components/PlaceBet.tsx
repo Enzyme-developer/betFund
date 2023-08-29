@@ -1,84 +1,103 @@
-import React, { useState } from "react";
-import Input from "./Input";
-import Button from "./Button";
-import ModalTitle from "./ModalTitle";
+"use client";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import useModalStore from "../store/modalStore";
-import { handleBetValidation } from "../utils/handleStepValidation";
-import { bookingType } from "../types/formType";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-const PlaceBet = () => {
-  const initialState = {
-    bookingNumber: "",
-    odds: "",
-  };
+export function PlaceBet() {
+  const betModal = useModalStore((state) => state.betModal);
+  const openModal = useModalStore((state) => state.openModal);
+  const closeModal = useModalStore((state) => state.closeModal);
 
-  const initialErrorState = {
-    bookingNumber: "",
-    odds: "",
-  };
+  const formSchema = z.object({
+    betId: z.string().min(2),
+    odds: z.string().min(1),
+  });
 
-  const [formData, setFormData] = useState<bookingType>(initialState);
-  const [errors, setErrors] = useState(initialErrorState);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      betId: "",
+      odds: "",
+    },
+  });
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleSubmit = () => {
-    const stepErrors = handleBetValidation(formData);
-    if (Object.keys(stepErrors).length === 0) {
-      //form submission to the backend API
-      console.log("Form submitted");
-    } else {
-      setErrors(stepErrors);
-    }
-  };
-
-  const closeSignupModal = useModalStore((state) => state.closeSignupModal);
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+    //api call
+  }
 
   return (
-    <div
-      className={
-        "w-3/5 md:w-2/5 bg-black flex flex-col justify-center items-center"
-      }
-    >
-      <ModalTitle title="Place Bet" handleClose={closeSignupModal} />
-      <div className=" w-3/5 px-6 py-8 bg-black flex flex-col justify-center items-center space-y-4 ">
-        <Input
-          type="text"
-          name="bookingNumber"
-          label="booking Number"
-          value={formData?.bookingNumber}
-          onChange={onChange}
-        />
-        {errors.bookingNumber && (
-          <p className="text-red-500">{errors.bookingNumber}</p>
-        )}
-        <Input
-          type="text"
-          name="odds"
-          label="Odds"
-          value={formData?.odds}
-          onChange={onChange}
-        />
-        {errors.odds && <p className="text-red-500">{errors.odds}</p>}
-
-        <p className="font-medium text-lg text-center text-white">
-          Pick your games on Bet9ja platform then copy the booking number.
-        </p>
-
-        <p className="font-medium text-lg text-center mt-4 text-white">
-          Bets with less than <span className="text-primary">10 odds</span> will
-          be rejected
-        </p>
-
-        <Button name="Submit" onClick={handleSubmit} />
-      </div>
+    <div className="flex flex-col p-8">
+      <p onClick={() => openModal("betModal")}>Opennnnn</p>
+      {betModal && (
+        <Dialog open={betModal} onOpenChange={() => closeModal("betModal")}>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Place Bet</DialogTitle>
+            </DialogHeader>
+            <div>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                  <FormField
+                    control={form.control}
+                    name="betId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Bet9ja Booking Id</FormLabel>
+                        <FormControl>
+                          <Input placeholder="NBCGHDIXXHJ55374" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="odds"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Game Odds</FormLabel>
+                        <FormControl>
+                          <Input placeholder="odds" type="number" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <DialogDescription>
+                    <p className="font-normal text-center">
+                      Pick your games on Bet9ja platform then copy the booking
+                      number.
+                    </p>
+                    <p className="text-center mt-4">
+                      Bets with less than{" "} <strong >10 Odds </strong>{" "} will be rejected
+                    </p>
+                  </DialogDescription>
+                  <Button type="submit">Submit</Button>
+                </form>
+              </Form>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
-};
-
-export default PlaceBet;
+}

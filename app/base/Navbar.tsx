@@ -14,7 +14,7 @@ const Navbar = () => {
       <div className="flex flex-col max-w-screen-xl px-8 mx-auto lg:items-center lg:justify-between lg:flex-row py-4">
         <div className="flex flex-col lg:flex-row items-center space-x-4 xl:space-x-8">
           <div className="w-full flex flex-row items-center justify-between py-6">
-            <div>
+            <div className="font-bold">
               MyBetFund
             </div>
             <button
@@ -60,7 +60,7 @@ const Navbar = () => {
               open ? "flex" : "hidden lg:flex"
             } w-full h-auto flex flex-col flex-grow lg:items-center pb-4 lg:pb-0 lg:justify-end lg:flex-row origin-top duration-300 xl:space-x-2 space-y-3 lg:space-y-0`}
           >
-            <NavLink name="Cryptocurrency" url="#" />
+            <NavLink name="bet" url="/bet" />
             <NavLink name="Exchanges" url="#" />
             <NavLink name="Watchlist" url="#" />
             <NavLink name="NFT" url="#" />
