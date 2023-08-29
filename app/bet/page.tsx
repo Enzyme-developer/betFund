@@ -1,6 +1,6 @@
 import { Account } from "../components/Account";
 import { CashOut } from "../components/CashOut";
-import Countdown from "../components/Countdown";
+import { Countdown } from "../components/Countdown";
 import { Lost } from "../components/Lost";
 import { PlaceBet } from "../components/PlaceBet";
 import * as React from "react";

@@ -1,47 +1,138 @@
-'use client'
-import React, { useEffect, useState } from 'react';
+"use client";
+import React, { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import useModalStore from "../store/modalStore";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
 
-const Countdown = () => {
-  const [countdown, setCountdown] = useState({ hours: 0, minutes: 0, seconds: 0 });
+export function Countdown() {
+  const countdownModal = useModalStore((state) => state.countdownModal);
+  const openModal = useModalStore((state) => state.openModal);
+  const closeModal = useModalStore((state) => state.closeModal);
+
+  const [remainingTime, setRemainingTime] = useState<number>(0);
+
+  const getCurrentTime = () => {
+    const now = new Date();
+    return now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+  };
+
+  const calculateRemainingTime = () => {
+    const currentTime = getCurrentTime();
+    if (currentTime >= 28800 && currentTime < 46800) {
+      // Between 8:00 AM and 10:00 PM
+      return 0; //
+    } else if (currentTime >= 0 && currentTime < 28800) {
+      // Between 12:00 AM and 8:00 AM
+      return 28800 - currentTime;
+    } else {
+      // Past 10:00 PM
+      const nextMorning = (24 - currentTime / 3600) * 3600 + 28800;
+      return nextMorning;
+    }
+  };
 
   useEffect(() => {
-    // Calculate the target time for the store to open (8 AM next day)
-    const targetOpenTime = new Date();
-    const targetClosingTime = new Date();
-    // targetOpenTime.setDate(targetOpenTime.getDate() + 1);
-    targetOpenTime.setHours(8, 0, 0, 0); // Set time to 8:00 AM
-    targetClosingTime.setHours(22, 0, 0, 0); 
+    const interval = setInterval(() => {
+      setRemainingTime(calculateRemainingTime());
+    }, 1000);
 
-    const updateCountdown = () => {
-      const currentTime = new Date();
-      const timeDifference = Number(targetOpenTime.setDate(targetOpenTime.getDate() + 1)) - Number(currentTime);
-
-      if (currentTime > targetClosingTime || currentTime < targetOpenTime) {
-        const hours = Math.floor(timeDifference / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
-        setCountdown({ hours, minutes, seconds });
-      } else {
-        // Store is open, countdown should stop
-        clearInterval(interval);
-      }
+    return () => {
+      clearInterval(interval);
     };
-
-    // Update countdown every second
-    const interval = setInterval(updateCountdown, 1000);
-
-    // Cleanup the interval on component unmount
-    return () => clearInterval(interval);
   }, []);
 
+  const formatTime = (time: number) => {
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = time % 60;
+    return `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
+
+  const form = useForm({
+    defaultValues: {
+      startTime: "",
+      stopTime: "",
+    },
+  });
+
   return (
-    <div>
-      <p>
-        Store is closing in {countdown.hours} hours, {countdown.minutes} minutes, and {countdown.seconds} seconds.
-      </p>
+    <div className="flex flex-col p-8">
+      <p onClick={() => openModal("countdownModal")}>Opennnnn</p>
+      {countdownModal && (
+        <Dialog
+          open={countdownModal}
+          onOpenChange={() => closeModal("CountdownModal")}
+        >
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Try again later</DialogTitle>
+            </DialogHeader>
+            <DialogDescription>
+              <p className="font-normal text-center">
+                You can place bets between:
+              </p>
+            </DialogDescription>
+            <div>
+              <Form {...form}>
+                <form className="space-y-8">
+                  <FormField
+                    control={form.control}
+                    name="startTime"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Start time</FormLabel>
+                        <FormControl>
+                          <Input placeholder="08: 00am" value={"08: 00am"} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="stopTime"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Stop time</FormLabel>
+                        <FormControl>
+                          <Input placeholder="10: 00pm" value={"10: 00pm"} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div>
+                    {remainingTime === 0 ? null : (
+                      <p>{formatTime(remainingTime)} remaining</p>
+                    )}
+                  </div>
+                  <Button onClick={() => closeModal("CountdownModal")}>
+                    Close
+                  </Button>
+                </form>
+              </Form>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
-};
-
-export default Countdown;
+}
