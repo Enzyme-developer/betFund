@@ -115,7 +115,7 @@ function Login() {
                       </FormItem>
                     )}
                   />
-                  <Button className="mt-4 bg-blue-500 block" type="submit">
+                  <Button className="mt-4 block" type="submit">
                     Log in
                   </Button>
                 </form>
@@ -123,7 +123,7 @@ function Login() {
 
               <p className="mt-1">
                 <Link
-                  className="text-sm font-medium text-blue-500 dark:text-purple-400 hover:underline"
+                  className="text-sm font-medium text-primary hover:underline"
                   href="/signup"
                 >
                   Create account
@@ -138,3 +138,5 @@ function Login() {
 }
 
 export default Login;
+
+
