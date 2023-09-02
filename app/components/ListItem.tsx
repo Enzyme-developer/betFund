@@ -14,7 +14,7 @@ const ListItem: React.FC<propsTypes> = ({ children, title }) => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="w-4 text-[#0c66ee]"
+          className="w-4 text-primary"
         >
           <path
             fillRule="evenodd"

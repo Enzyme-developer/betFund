@@ -218,7 +218,7 @@ export default function Home() {
               className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mt-2"
             >
               <BaseButton
-                style="max-w-full px-8 py-4 bg-gradient-to-r from-[#468ef9] to-[#0c66ee] border border-[#0c66ee] text-white"
+                style="max-w-full px-8 py-4 bg-gradient-to-r from-primary to-primary border border-primary text-black"
                 href={""}
               >
                 Get Started
@@ -355,7 +355,7 @@ export default function Home() {
         </BaseSection>
       </section>
 
-      <Card className="w-4/5 mx-auto bg-blue-500 h-fit text-center text-white mb-4">
+      <Card className="w-4/5 mx-auto bg-primary h-fit text-center text-black mb-4">
         <CardHeader>
           <CardTitle>How it works</CardTitle>
         </CardHeader>
@@ -440,9 +440,9 @@ export default function Home() {
             </ul>
             <BaseButton
               href="/signup"
-              style="w-full sm:max-w-[240px] px-10 py-4 bg-inherit text-gradient border border-[#0c66ee] text-base"
+              style="mt-6 w-full sm:max-w-[240px] px-10 py-4 bg-inherit text-gradient border border-primary text-base"
             >
-              Get STarted
+              Get Started
             </BaseButton>
           </div>
         </BaseSection>
@@ -498,13 +498,13 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row">
               <BaseButton
                 href="/signup"
-                style="px-10 py-4 bg-inherit text-gradient border border-[#4A8FF6] text-base"
+                style="px-10 py-4 bg-inherit text-gradient border border-primary text-base"
               >
                 Get Started
               </BaseButton>
               <BaseButton
                 href="#"
-                style="bg-inherit text-[#4A8FF6] px-10 py-4 text-center underline rounded-full hover:shadow-none"
+                style="bg-inherit text-primary px-10 py-4 text-center underline rounded-full hover:shadow-none"
               >
                 Learn More
               </BaseButton>

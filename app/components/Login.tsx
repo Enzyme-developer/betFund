@@ -68,7 +68,7 @@ export function Login() {
                   onSubmit={form.handleSubmit(onSubmit)}
                   className="space-y-8"
                 >
-                  {/* <FormField
+                  <FormField
                     control={form.control}
                     name="phoneNumber"
                     render={({ field }) => (
@@ -97,7 +97,7 @@ export function Login() {
                         <FormMessage />
                       </FormItem>
                     )}
-                  /> */}
+                  />
                   <FormField
                     control={form.control}
                     name="password"

@@ -83,10 +83,10 @@ const Navbar = () => {
           </ul>
         </div>
         <div className={`${open ? "flex" : "hidden lg:flex"} space-x-3`}>
-          <BaseButton href="/login" style="px-8 xl:px-10 py-3 mt-2 bg-inherit text-gradient border border-primary">
+          <BaseButton href="/login" style="px-8 xl:px-10 py-3 mt-2 bg-inherit text-black border border-primary">
             Login
           </BaseButton>
-          <BaseButton href="/signup" style="px-8 xl:px-10 py-3 mt-2 bg-gradient-to-r from-primary to-primary text-white">
+          <BaseButton href="/signup" style="px-8 xl:px-10 py-3 mt-2 bg-gradient-to-r from-primary to-primary text-black">
             Sign Up
           </BaseButton>
         </div>

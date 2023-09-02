@@ -9,7 +9,7 @@ const Footer = () => {
           <div className="md:w-full lg:w-full w-full sm:w-1/2 xl:w-fit flex flex-col sm:flex-row sm:px-6 py-6 sm:py-12 sm:space-x-10 sm:border-r-0 border-[#DDDDDD]">
             <div className="sm:hidden xl:block mb-6 sm:mb-0">
               <a href="#" className="font-bold">
-                MyBetFund
+                MyBetFunds
               </a>
             </div>
             <ul className="space-y-4">
