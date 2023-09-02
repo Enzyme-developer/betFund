@@ -15,7 +15,7 @@ const Navbar = () => {
         <div className="flex flex-col lg:flex-row items-center space-x-4 xl:space-x-8">
           <div className="w-full flex flex-row items-center justify-between py-6">
             <div className="font-bold">
-              MyBetFund
+              MyBetFunds
             </div>
             <button
               className="rounded-lg lg:hidden focus:outline-none focus:shadow-outline"
@@ -83,10 +83,10 @@ const Navbar = () => {
           </ul>
         </div>
         <div className={`${open ? "flex" : "hidden lg:flex"} space-x-3`}>
-          <BaseButton href="/login" style="px-8 xl:px-10 py-3 mt-2 bg-inherit text-gradient border border-[#0c66ee]">
+          <BaseButton href="/login" style="px-8 xl:px-10 py-3 mt-2 bg-inherit text-gradient border border-primary">
             Login
           </BaseButton>
-          <BaseButton href="/signup" style="px-8 xl:px-10 py-3 mt-2 bg-gradient-to-r from-[#468ef9] to-[#0c66ee] text-white">
+          <BaseButton href="/signup" style="px-8 xl:px-10 py-3 mt-2 bg-gradient-to-r from-primary to-primary text-white">
             Sign Up
           </BaseButton>
         </div>

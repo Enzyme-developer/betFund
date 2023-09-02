@@ -20,7 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
-function Login() {
+export function Login() {
   const formSchema = z.object({
     phoneNumber: z.string().nonempty(),
     password: z.string().min(4),
@@ -68,7 +68,7 @@ function Login() {
                   onSubmit={form.handleSubmit(onSubmit)}
                   className="space-y-8"
                 >
-                  <FormField
+                  {/* <FormField
                     control={form.control}
                     name="phoneNumber"
                     render={({ field }) => (
@@ -97,7 +97,7 @@ function Login() {
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                  /> */}
                   <FormField
                     control={form.control}
                     name="password"
