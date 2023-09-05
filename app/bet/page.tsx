@@ -4,8 +4,6 @@ import { Countdown } from "../components/Countdown";
 import { Lost } from "../components/Lost";
 import { PlaceBet } from "../components/PlaceBet";
 import * as React from "react";
-
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -22,7 +20,7 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-screen w-full p-6">
       <Navbar />
-      <Card className="w-full bg-blue-500 h-fit text-center text-white">
+      <Card className="w-full bg-primary h-fit text-center text-black">
         <CardHeader>
           <CardTitle>Evaluation</CardTitle>
           <CardDescription></CardDescription>
@@ -43,7 +41,7 @@ export default function Home() {
       <PlaceBet />
       <Account />
       <Countdown />
-      <Card className="w-full bg-blue-500 opacity-40 h-fit text-center text-white mb-4">
+      <Card className="w-full bg-primary opacity-40 h-fit text-center text-black mb-4">
         <CardHeader>
           <CardTitle>Level 1</CardTitle>
           <CardDescription></CardDescription>
