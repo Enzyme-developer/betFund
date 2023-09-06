@@ -19,8 +19,7 @@ export default function RootLayout({
         <div className="min-h-screen font-sans antialiased relative">
           <div className="relative">{children}</div>
         </div>
-      </body>
-      <Toaster
+        <Toaster
         toastOptions={{
           success: {
             style: {
@@ -36,6 +35,7 @@ export default function RootLayout({
           },
         }}
       />
+      </body>
     </html>
   );
 }

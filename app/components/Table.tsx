@@ -9,7 +9,6 @@ import {
   TableContainer,
   Badge,
   Avatar,
-  Button,
   Pagination,
 } from "@windmill/react-ui";
 import { useEffect, useState } from "react";
