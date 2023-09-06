@@ -1,10 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Footer from "./base/Footer";
-import Navbar from "./base/Navbar";
-
-const inter = Inter({ subsets: ["latin"] });
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "MyBetFund",
@@ -20,12 +17,25 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <div className="min-h-screen font-sans antialiased relative">
-          <div className="relative">
-            <div className="absolute top-0 left-0 w-full h-[125vh] sm:h-[225vh] lg:h-[125vh] cover-gradient-2 sm:cover-gradient"></div>
-            {children}
-          </div>
+          <div className="relative">{children}</div>
         </div>
       </body>
+      <Toaster
+        toastOptions={{
+          success: {
+            style: {
+              background: "green",
+              color: "white",
+            },
+          },
+          error: {
+            style: {
+              background: "red",
+              color: "white",
+            },
+          },
+        }}
+      />
     </html>
   );
 }

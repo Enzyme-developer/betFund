@@ -19,6 +19,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { ApiResponse, create } from "apisauce";
+import { toast } from "react-hot-toast";
+import { api } from "../utils/api";
+import Loader from "../reusables/Loader";
 
 export function Login() {
   const formSchema = z.object({
@@ -34,11 +38,28 @@ export function Login() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // make api call to submit data
+ async  function onSubmit(values: z.infer<typeof formSchema>) {
+    const data = {
+      phone_number: `+${values?.phoneNumber}`,
+      password: values?.password,
+   };
+   
+    try {
+      const response: ApiResponse<any, any> = await api.post("auth/login", data);
+      if (response.ok) {
+        toast.success(response?.data.message);
+        localStorage.setItem("auth", JSON.stringify(response.data));
+      } else {
+        toast.error(response?.data.message);
+      }
+    } catch (error: any) {
+      toast.error(error?.response?.data.message);
+    } finally{
+      form.reset()
+    }
   }
 
+  const isSubmitting= form.formState.isSubmitting;
   return (
     <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
       <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
@@ -119,6 +140,7 @@ export function Login() {
                     Log in
                   </Button>
                 </form>
+                {isSubmitting && <Loader />}
               </Form>
 
               <p className="mt-1">

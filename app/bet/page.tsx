@@ -1,3 +1,4 @@
+"use client";
 import { Account } from "../components/Account";
 import { CashOut } from "../components/CashOut";
 import { Countdown } from "../components/Countdown";
@@ -15,8 +16,30 @@ import {
 import Footer from "../base/Footer";
 import { GameData } from "../components/Table";
 import Navbar from "../base/Navbar";
+import { create } from "apisauce";
 
 export default function Home() {
+  const api = create({
+    baseURL: "https://api.mybetfunds.com/api/",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+
+  const fetchwithdrawals = async () => {
+    try {
+      const response = await api.get("withdrawals");
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchwithdrawals();
+  }, []);
+
   return (
     <main className="flex flex-col min-h-screen w-full p-6">
       <Navbar />

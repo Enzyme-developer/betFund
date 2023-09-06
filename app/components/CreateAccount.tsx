@@ -19,13 +19,18 @@ import useFormStore from "../store/formStore";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ApiResponse, create } from "apisauce";
+import { states } from "../utils/states";
+import { toast } from "react-hot-toast";
+import { api } from "../utils/api";
+import Loader from "../reusables/Loader";
 
 const CreateAccount = () => {
   const { formData, setFormData, setStep } = useFormStore();
 
   const formSchema = z.object({
+    name: z.string().min(2),
     email: z.string().email(),
-    password: z.string().min(4),
     state: z.string().nonempty(),
   });
 
@@ -33,21 +38,43 @@ const CreateAccount = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: formData?.email,
-      password: formData?.password,
+      name: formData?.name,
       state: formData?.state,
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setFormData({
       ...formData,
       email: values.email,
-      password: values.password,
+      name: values.name,
       state: values.state,
     });
-    // make api call to submit data
-  }
 
+    const data = {
+      phone_number: `+${formData?.phoneNumber}`,
+      password: formData?.password,
+      otp_code: formData?.otp,
+      state: "Lagos",
+      name: values?.name,
+      email: values?.email,
+    };
+
+    try {
+      const response: ApiResponse<any, any> = await api.post("auth/register", data);
+      if (response.ok) {
+        toast.success(response?.data.message);
+        localStorage.setItem("auth", JSON.stringify(response.data));
+      } else {
+        toast.error(response?.data.message);
+      }
+    } catch (error: any) {
+      toast.error(error?.response.data.message);
+    } finally {
+      form.reset()
+    }
+  }
+  const isSubmitting= form.formState.isSubmitting;
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -58,7 +85,7 @@ const CreateAccount = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Johngmail.com" {...field} />
+                <Input placeholder="John@gmail.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -66,12 +93,12 @@ const CreateAccount = () => {
         />
         <FormField
           control={form.control}
-          name="password"
+          name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="******" {...field} />
+                <Input placeholder="John Doe" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -79,20 +106,22 @@ const CreateAccount = () => {
         />
         <FormField
           control={form.control}
-          name="password"
+          name="state"
           render={({ field }) => (
             <FormItem>
               <FormLabel>State</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a State" />
+                    <SelectValue placeholder="Select a state" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
+                <SelectContent className="h-40 overflow-y-scroll">
+                  {states.map((state: string) => (
+                    <SelectItem key={state} value={state}>
+                      {state}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -102,8 +131,9 @@ const CreateAccount = () => {
         <Button className="mr-4" onClick={() => setStep(2)}>
           Previous
         </Button>
-        <Button type="submit">Next</Button>
+        <Button type="submit">Signup</Button>
       </form>
+      {isSubmitting && <Loader />}
     </Form>
   );
 };

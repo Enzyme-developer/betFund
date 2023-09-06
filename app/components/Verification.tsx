@@ -27,12 +27,14 @@ const Verification = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setFormData({
       ...formData,
       otp: values.otp,
     });
-    setStep(3);
+
+    console.log(values);
+    setStep(3)
   }
 
   return (
