@@ -1,9 +1,26 @@
-import React from 'react'
+import React from "react";
 
-const Status = () => {
-  return (
-    <div className='bg'>Status</div>
-  )
+interface TransactionStatusProps {
+  status: "success" | "declined" | "pending";
 }
 
-export default Status
+const statusColors: Record<string, string> = {
+  success: "green",
+  declined: "red",
+  pending: "yellow",
+};
+
+const Status: React.FC<TransactionStatusProps> = ({ status }) => {
+  const statusColor = statusColors[status] || "gray";
+
+  return (
+    <span
+      style={{ background: statusColor }}
+      className={`px-2 py-1 rounded-lg text-white font-bold`}
+    >
+      {status.charAt(0).toUpperCase() + status.slice(1)}
+    </span>
+  );
+};
+
+export default Status;
