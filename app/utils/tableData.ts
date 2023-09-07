@@ -4,7 +4,7 @@ export default [
       name: 'Chandler Jacobi',
       job: 'Direct Security Executive',
       amount: 989.4,
-      status: 'primary',
+      status: 'success',
       date: 'Mon Feb 03 2020 04:13:15 GMT-0300 (Brasilia Standard Time)',
     },
     {
@@ -12,7 +12,7 @@ export default [
       name: 'Monserrat Marquardt',
       job: 'Forward Accountability Producer',
       amount: 471.44,
-      status: 'danger',
+      status: 'pending',
       date: 'Fri Nov 29 2019 10:43:17 GMT-0300 (Brasilia Standard Time)',
     },
     {
@@ -20,7 +20,7 @@ export default [
       name: 'Lonie Wyman',
       job: 'Legacy Program Director',
       amount: 934.24,
-      status: 'success',
+      status: 'declined',
       date: 'Fri Apr 03 2020 03:07:53 GMT-0300 (Brasilia Standard Time)',
     },
     {

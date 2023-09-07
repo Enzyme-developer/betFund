@@ -7,77 +7,109 @@ import {
   TableRow,
   TableFooter,
   TableContainer,
-  Badge,
   Avatar,
   Pagination,
 } from "@windmill/react-ui";
 import { useEffect, useState } from "react";
 import response from "../utils/tableData";
+import Status from "../reusables/Status";
+import { ApiResponse, create } from "apisauce";
 
 export const GameData = () => {
-  const [pageTable1, setPageTable1] = useState(1);
+  const [withdrawals, setWithdrawals] = useState<any>([]);
 
-  const [dataTable1, setDataTable1] = useState<any>([]);
+  const { token } = localStorage.getItem("auth")
+    ? JSON.parse(localStorage.getItem("auth") || "{}")
+    : null;
+
+  const api = create({
+    baseURL: "https://api.mybetfunds.com/api/",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  useEffect(() => {
+    const fetchWithdrawals = async () => {
+      try {
+        const response: ApiResponse<any, any> = await api.get("withdrawals");
+        if (response.ok) {
+          setWithdrawals(response.data.data);
+        } else {
+          console.error("API request failed:", response.data.message);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchWithdrawals();
+  }, []);
+
+  const [pageTable, setPageTable] = useState(1);
+
+  const [dataTable, setDataTable] = useState<any>([]);
 
   // pagination setup
   const resultsPerPage = 10;
-  const totalResults = response.length;
+  const totalResults = withdrawals?.length;
 
   // pagination change control
-  function onPageChangeTable1(p: any) {
-    setPageTable1(p);
+  function onPageChangeTable(p: number) {
+    setPageTable(p);
   }
 
   useEffect(() => {
-    setDataTable1(
-      response.slice(
-        (pageTable1 - 1) * resultsPerPage,
-        pageTable1 * resultsPerPage
+    setDataTable(
+      withdrawals?.slice(
+        (pageTable - 1) * resultsPerPage,
+        pageTable * resultsPerPage
       )
     );
-  }, [pageTable1]);
+  }, [pageTable]);
 
   return (
     <div className="my-6">
-      <p className="font-bold text-center text-lg">Test Game </p>
+      <p className="font-bold text-center text-lg">Withdrawal Requests</p>
       <TableContainer className="mb-8">
         <Table>
           <TableHeader>
             <tr>
-              <TableCell>Bets</TableCell>
-              <TableCell>Stake</TableCell>
-              <TableCell>Odds</TableCell>
-              {/* <TableCell>Qins</TableCell> */}
+              <TableCell>ID</TableCell>
+              <TableCell>Amount</TableCell>
               <TableCell>Status</TableCell>
+              <TableCell>Date</TableCell>
             </tr>
           </TableHeader>
           <TableBody>
-            {dataTable1.map((user: any, i: number) => (
+            {dataTable.map((withdrawal: any, i: number) => (
               <TableRow key={i}>
                 <TableCell>
                   <div className="flex items-center text-sm">
                     <Avatar
                       className="hidden mr-3 md:block"
-                      src={user.avatar}
-                      alt="User avatar"
+                      src={withdrawal?.avatar}
+                      alt="withdrawal avatar"
                     />
                     <div>
-                      <p className="font-semibold">{user.name}</p>
+                      <p className="font-semibold">{withdrawal?.name}</p>
                       <p className="text-xs text-gray-600 dark:text-gray-400">
-                        {user.job}
+                        {withdrawal?.job}
                       </p>
                     </div>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className="text-sm">$ {user.amount}</span>
+                  <span className="text-sm">$ {withdrawal?.amount}</span>
                 </TableCell>
                 <TableCell>
-                  <Badge type={user.status}>{user.status}</Badge>
+                  {/* <Badge type={withdrawal.status}>{withdrawal.status}</Badge> */}
+                  <Status status={withdrawal?.status} />
                 </TableCell>
                 <TableCell>
                   <span className="text-sm">
-                    {new Date(user.date).toLocaleDateString()}
+                    {new Date(withdrawal?.date).toLocaleDateString()}
                   </span>
                 </TableCell>
               </TableRow>
@@ -88,7 +120,7 @@ export const GameData = () => {
           <Pagination
             totalResults={totalResults}
             resultsPerPage={resultsPerPage}
-            onChange={onPageChangeTable1}
+            onChange={onPageChangeTable}
             label="Table navigation"
           />
         </TableFooter>

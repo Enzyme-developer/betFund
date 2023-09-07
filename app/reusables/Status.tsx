@@ -16,7 +16,9 @@ const Status: React.FC<TransactionStatusProps> = ({ status }) => {
   return (
     <span
       style={{ background: statusColor }}
-      className={`px-2 py-1 rounded-lg text-white font-bold`}
+      className={`rounded-lg ${
+        status == "pending" ? "text-black" : "text-white"
+      } font-medium px-1 py-[1px] text-[10px]`}
     >
       {status.charAt(0).toUpperCase() + status.slice(1)}
     </span>
