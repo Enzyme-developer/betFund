@@ -21,6 +21,7 @@ import PeopleIcon from "../assets/icons/cards.svg";
 import Sidebar from "../components/Sidebar";
 import Header from "../reusables/Header";
 import Status from "../reusables/Status";
+import Paystack from "../components/Paystack";
 
 function Dashboard() {
   const [page, setPage] = useState(1);
@@ -32,24 +33,22 @@ function Dashboard() {
   function onPageChange(p: number) {
     setPage(p);
   }
-  // let token = null;
+  let token = null;
 
-  // if (typeof window !== "undefined" && window.localStorage) {
-  //   const authData = localStorage.getItem("auth");
-  //   if (authData) {
-  //     const parsedAuthData = JSON.parse(authData);
-  //     token = parsedAuthData.token;
-  //   }
-  // }
+  if (typeof window !== "undefined" && window.localStorage) {
+    const authData = localStorage.getItem("auth");
+    if (authData) {
+      const parsedAuthData = JSON.parse(authData);
+      token = parsedAuthData.token;
+    }
+  }
 
   const api = create({
     baseURL: "https://api.mybetfunds.com/api/",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: `Bearer ${JSON.parse(
-        localStorage.getItem("token") || "{}"
-      )}?.token`,
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -189,6 +188,7 @@ function Dashboard() {
               />
             </TableFooter>
           </TableContainer>
+          <Paystack />
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import React from "react";
 import test from "../../assets/phase.png";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const routes = [
   {
@@ -35,8 +36,8 @@ function SidebarContent() {
         {routes.map((route: any, index: number) => (
           <div
             key={index}
-            className={`px-3 py-2 rounded-lg space-x-3 flex items-center mx-4 ${
-              pathname == route.path ? "bg-primary font-semibold" : ""
+            className={`cursor-pointer px-3 py-2 rounded-lg space-x-3 flex items-center mx-4 ${
+              pathname == route.path ? "bg-primary font-semibold text-black" : ""
             }`}
           >
             <Image
@@ -45,7 +46,7 @@ function SidebarContent() {
               src={route.icon}
               alt={route.path}
             />
-            <span>{route.name}</span>
+            <Link href={route.path}>{route.name}</Link>
           </div>
         ))}
       </ul>

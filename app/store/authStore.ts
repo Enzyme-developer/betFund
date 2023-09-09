@@ -8,14 +8,12 @@ type userType = {
 };
 
 interface AuthState {
-  user: userType;
+  user: userType | null;
   setUser: (data: userType) => void;
 }
 
 const useAuthStore = create<AuthState>((set) => ({
-  user: localStorage.getItem("auth")
-    ? JSON.parse(localStorage.getItem("auth") || "{}").user
-    : null,
+  user: null,
   setUser: (data) => set({ user: data }),
 }));
 
