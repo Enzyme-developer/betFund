@@ -21,7 +21,7 @@ export const WithdrawalData = () => {
 
   let token = null;
 
-if (typeof localStorage !== 'undefined') {
+if (typeof window !== 'undefined' && window.localStorage) {
   const authData = localStorage.getItem('auth');
   if (authData) {
     const parsedAuthData = JSON.parse(authData);
