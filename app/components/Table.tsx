@@ -19,22 +19,24 @@ export const WithdrawalData = () => {
   const [withdrawals, setWithdrawals] = useState<any>([]);
   console.log(withdrawals)
 
-  let token = null;
+//   let token = null;
 
-if (typeof window !== 'undefined' && window.localStorage) {
-  const authData = localStorage.getItem('auth');
-  if (authData) {
-    const parsedAuthData = JSON.parse(authData);
-    token = parsedAuthData.token;
-  }
-}
+// if (typeof window !== 'undefined' && window.localStorage) {
+//   const authData = localStorage.getItem('auth');
+//   if (authData) {
+//     const parsedAuthData = JSON.parse(authData);
+//     token = parsedAuthData.token;
+//   }
+// }
 
   const api = create({
     baseURL: "https://api.mybetfunds.com/api/",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${JSON.parse(
+        localStorage.getItem("token") || "{}"
+      )}?.token`,
     },
   });
 
