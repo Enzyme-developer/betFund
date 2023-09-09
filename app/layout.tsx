@@ -1,6 +1,10 @@
+"use client";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
+import { SidebarProvider } from "./context/SidebarContext";
+// import ThemedSuspense from "./components/ThemedSuspense";
+import { Windmill } from "@windmill/react-ui";
 
 export const metadata: Metadata = {
   title: "MyBetFund",
@@ -13,28 +17,32 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
-        <div className="min-h-screen font-sans antialiased relative">
-          <div className="relative">{children}</div>
-        </div>
-        <Toaster
-        toastOptions={{
-          success: {
-            style: {
-              background: "green",
-              color: "white",
-            },
-          },
-          error: {
-            style: {
-              background: "red",
-              color: "white",
-            },
-          },
-        }}
-      />
-      </body>
-    </html>
+    <SidebarProvider>
+      <Windmill usePreferences>
+        <html lang="en">
+          <body>
+            <div className="min-h-screen font-sans antialiased relative">
+              <div className="relative">{children}</div>
+            </div>
+            <Toaster
+              toastOptions={{
+                success: {
+                  style: {
+                    background: "green",
+                    color: "white",
+                  },
+                },
+                error: {
+                  style: {
+                    background: "red",
+                    color: "white",
+                  },
+                },
+              }}
+            />
+          </body>
+        </html>
+      </Windmill>
+    </SidebarProvider>
   );
 }

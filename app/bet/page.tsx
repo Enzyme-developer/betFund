@@ -14,9 +14,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Footer from "../base/Footer";
-import { GameData } from "../components/Table";
-import { ApiResponse, create } from "apisauce";
 import Navbar from "../base/Navbar";
+import { WithdrawalData } from "../components/Table";
 
 export default function Home() {
   return (
@@ -37,7 +36,7 @@ export default function Home() {
         </CardContent>
         <CardFooter className="flex justify-between"></CardFooter>
       </Card>
-      <GameData />
+      <WithdrawalData />
       <CashOut />
       <Lost />
       <PlaceBet />

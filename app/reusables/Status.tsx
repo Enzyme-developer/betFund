@@ -1,12 +1,12 @@
 import React from "react";
 
 interface TransactionStatusProps {
-  status: "success" | "declined" | "pending";
+  status: "approved" | "rejected" | "pending";
 }
 
 const statusColors: Record<string, string> = {
-  success: "green",
-  declined: "red",
+  approved: "green",
+  rejected: "red",
   pending: "yellow",
 };
 

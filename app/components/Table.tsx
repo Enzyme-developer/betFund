@@ -15,12 +15,19 @@ import response from "../utils/tableData";
 import Status from "../reusables/Status";
 import { ApiResponse, create } from "apisauce";
 
-export const GameData = () => {
+export const WithdrawalData = () => {
   const [withdrawals, setWithdrawals] = useState<any>([]);
+  console.log(withdrawals)
 
-  const { token } = localStorage.getItem("auth")
-    ? JSON.parse(localStorage.getItem("auth") || "{}")
-    : null;
+  let token = null;
+
+if (typeof localStorage !== 'undefined') {
+  const authData = localStorage.getItem('auth');
+  if (authData) {
+    const parsedAuthData = JSON.parse(authData);
+    token = parsedAuthData.token;
+  }
+}
 
   const api = create({
     baseURL: "https://api.mybetfunds.com/api/",
@@ -31,25 +38,45 @@ export const GameData = () => {
     },
   });
 
-  useEffect(() => {
-    const fetchWithdrawals = async () => {
-      try {
-        const response: ApiResponse<any, any> = await api.get("withdrawals");
-        if (response.ok) {
-          setWithdrawals(response.data.data);
-        } else {
-          console.error("API request failed:", response.data.message);
-        }
-      } catch (error) {
-        console.error(error);
+  const fetchWithdrawals = async () => {
+    try {
+      const response: ApiResponse<any, any> = await api.get("withdrawals");
+      console.log(response)
+      if (response.ok) {
+        setWithdrawals(response.data.data);
+      } else {
+        console.error("API request failed:", response.data.message);
       }
-    };
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const requestCashout = async () => {
+    try {
+      const response: ApiResponse<any, any> = await api.post("withdrawals/new", {amount: "500"});
+      console.log(response)
+      if (response.ok) {
+        // setWithdrawals(response.data.data);
+        console.log("yes")
+      } else {
+        console.error("API request failed:", response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    // fetchUserData()
     fetchWithdrawals();
   }, []);
 
   const [pageTable, setPageTable] = useState(1);
 
-  const [dataTable, setDataTable] = useState<any>([]);
+  const [dataTable, setDataTable] = useState<any>(withdrawals);
+
+  console.log(dataTable)
 
   // pagination setup
   const resultsPerPage = 10;
@@ -71,6 +98,7 @@ export const GameData = () => {
 
   return (
     <div className="my-6">
+      <button onClick={requestCashout}>Request</button>
       <p className="font-bold text-center text-lg">Withdrawal Requests</p>
       <TableContainer className="mb-8">
         <Table>
@@ -83,7 +111,7 @@ export const GameData = () => {
             </tr>
           </TableHeader>
           <TableBody>
-            {dataTable.map((withdrawal: any, i: number) => (
+            {withdrawals?.map((withdrawal: any, i: number) => (
               <TableRow key={i}>
                 <TableCell>
                   <div className="flex items-center text-sm">
@@ -95,13 +123,13 @@ export const GameData = () => {
                     <div>
                       <p className="font-semibold">{withdrawal?.name}</p>
                       <p className="text-xs text-gray-600 dark:text-gray-400">
-                        {withdrawal?.job}
+                        {withdrawal?.id}
                       </p>
                     </div>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className="text-sm">$ {withdrawal?.amount}</span>
+                  <span className="text-sm">₦{(withdrawal?.amount/100).toLocaleString('en-Ng')}</span>
                 </TableCell>
                 <TableCell>
                   {/* <Badge type={withdrawal.status}>{withdrawal.status}</Badge> */}
@@ -109,7 +137,7 @@ export const GameData = () => {
                 </TableCell>
                 <TableCell>
                   <span className="text-sm">
-                    {new Date(withdrawal?.date).toLocaleDateString()}
+                    {new Date(withdrawal?.updated_at).toLocaleDateString()}
                   </span>
                 </TableCell>
               </TableRow>

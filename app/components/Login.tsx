@@ -46,6 +46,7 @@ export function Login() {
    
     try {
       const response: ApiResponse<any, any> = await api.post("auth/login", data);
+      console.log(response)
       if (response.ok) {
         toast.success(response?.data.message);
         localStorage.setItem("auth", JSON.stringify(response.data));

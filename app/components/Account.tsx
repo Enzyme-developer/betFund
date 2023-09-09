@@ -19,12 +19,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { Level } from "./Level";
+import useAuthStore from "../store/authStore";
 
 export function Account() {
   const accountModal = useModalStore((state) => state.accountModal);
   const openModal = useModalStore((state) => state.openModal);
   const closeModal = useModalStore((state) => state.closeModal);
-
+  const user = useAuthStore((state) => state.user);
+  
   const form = useForm({
     defaultValues: {
       name: "",
@@ -55,7 +57,7 @@ export function Account() {
                       <FormItem>
                         <FormLabel>Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="John Doe" value={"John"} />
+                          <Input placeholder="John Doe" value={user?.name} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -70,7 +72,7 @@ export function Account() {
                         <FormControl>
                           <Input
                             placeholder="09063547786"
-                            value={"09063543117"}
+                            value={user?.phone_number}
                           />
                         </FormControl>
                         <FormMessage />
@@ -86,7 +88,7 @@ export function Account() {
                         <FormControl>
                           <Input
                             placeholder="doegmail.com"
-                            value={"doegmail.com"}
+                            value={user?.email}
                           />
                         </FormControl>
                         <FormMessage />
