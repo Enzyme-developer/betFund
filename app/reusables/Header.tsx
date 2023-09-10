@@ -1,14 +1,13 @@
 import React, { useContext, useState } from "react";
 import { SidebarContext } from "../context/SidebarContext";
-import test from "../assets/phase.png";
 import {
   Avatar,
-  Badge,
   Dropdown,
   DropdownItem,
   WindmillContext,
 } from "@windmill/react-ui";
 import Image from "next/image";
+import { LogOut, LogOutIcon, Menu, MoonIcon, Settings, Sun, User } from "lucide-react";
 
 function Header() {
   const { mode, toggleMode } = useContext(WindmillContext);
@@ -26,7 +25,7 @@ function Header() {
   }
 
   return (
-    <header className="z-40 p-4 bg-white shadow-bottom dark:bg-gray-800">
+    <header className="z-40 p-4 bg-white shadow-bottom dark:bg-gray-800 shadow-lg">
       <div className="container flex items-center justify-between h-full px-6 mx-auto text-primary dark:text-primary">
         {/* <!-- Mobile hamburger --> */}
         <button
@@ -34,7 +33,7 @@ function Header() {
           onClick={toggleSidebar}
           aria-label="Menu"
         >
-          {/* <MenuIcon className="w-6 h-6" aria-hidden="true" /> */}
+          <Menu className="w-6 h-6" aria-hidden="true" />
         </button>
         <ul className="flex items-center w-full justify-end flex-shrink-0 space-x-6">
           {/* <!-- Theme toggler --> */}
@@ -44,11 +43,11 @@ function Header() {
               onClick={toggleMode}
               aria-label="Toggle color mode"
             >
-              {mode === "dark"
-                ? // <SunIcon className="w-5 h-5" aria-hidden="true" />
-                  "Sun"
-                : // <MoonIcon className="w-5 h-5" aria-hidden="true" />
-                  "Moon"}
+              {mode === "dark" ? (
+                <Sun className="w-5 h-5" aria-hidden="true" />
+              ) : (
+                <MoonIcon className="w-5 h-5" aria-hidden="true" />
+              )}
             </button>
           </li>
           {/* <!-- Profile menu --> */}
@@ -72,30 +71,15 @@ function Header() {
               onClose={() => setIsProfileMenuOpen(false)}
             >
               <DropdownItem tag="a" href="#">
-                {/* <Image
-                  className="w-5 h-5"
-                  aria-hidden="true"
-                  src={test}
-                  alt="icon"
-                /> */}
+                <User className="w-5 h-5" />
                 <span>Profile</span>
               </DropdownItem>
               <DropdownItem tag="a" href="#">
-                {/* <Image
-                  className="w-5 h-5"
-                  aria-hidden="true"
-                  src={test}
-                  alt="icon"
-                /> */}
+                <Settings className="w-5 h-5" />
                 <span>Settings</span>
               </DropdownItem>
               <DropdownItem onClick={() => alert("Log out!")}>
-                {/* <Image
-                  className="w-5 h-5"
-                  aria-hidden="true"
-                  src={test}
-                  alt="icon"
-                /> */}
+                <LogOutIcon className="w-5 h-5" />
                 <span>Log out</span>
               </DropdownItem>
             </Dropdown>

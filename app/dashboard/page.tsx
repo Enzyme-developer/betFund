@@ -14,14 +14,11 @@ import {
 } from "@windmill/react-ui";
 import InfoCard from "../components/InfoCard";
 import { ApiResponse, create } from "apisauce";
-import CartIcon from "../assets/icons/home.svg";
-import ChatIcon from "../assets/icons/forms.svg";
-import MoneyIcon from "../assets/icons/cards.svg";
-import PeopleIcon from "../assets/icons/cards.svg";
 import Sidebar from "../components/Sidebar";
 import Header from "../reusables/Header";
 import Status from "../reusables/Status";
 import Paystack from "../components/Paystack";
+import { Play, ActivityIcon, CheckCircle,CoinsIcon, Check } from "lucide-react";
 
 function Dashboard() {
   const [page, setPage] = useState(1);
@@ -76,12 +73,6 @@ function Dashboard() {
       const response: ApiResponse<any, any> = await api.get("user");
       console.log(response);
       if (response.ok) {
-        // setWithdrawals(
-        //   response?.data.data?.slice(
-        //     (page - 1) * resultsPerPage,
-        //     page * resultsPerPage
-        //   )
-        // );
       } else {
         console.error("API request failed:", response.data.message);
       }
@@ -105,7 +96,7 @@ function Dashboard() {
           <div className="grid gap-6 my-8 md:grid-cols-2 xl:grid-cols-4">
             <InfoCard title="Total Bets" value="6389">
               <RoundIcon
-                icon={PeopleIcon}
+                icon={ActivityIcon}
                 iconColorClass="text-orange-500 dark:text-orange-100"
                 bgColorClass="bg-orange-100 dark:bg-orange-500"
                 className="mr-4"
@@ -114,7 +105,7 @@ function Dashboard() {
 
             <InfoCard title="Test Balance" value="$ 46,760.89">
               <RoundIcon
-                icon={MoneyIcon}
+                icon={CoinsIcon}
                 iconColorClass="text-green-500 dark:text-green-100"
                 bgColorClass="bg-green-100 dark:bg-green-500"
                 className="mr-4"
@@ -123,7 +114,7 @@ function Dashboard() {
 
             <InfoCard title="Real Balance" value="376">
               <RoundIcon
-                icon={CartIcon}
+                icon={Check}
                 iconColorClass="text-blue-500 dark:text-blue-100"
                 bgColorClass="bg-blue-100 dark:bg-blue-500"
                 className="mr-4"
@@ -132,7 +123,7 @@ function Dashboard() {
 
             <InfoCard title="Pending transactions" value="35">
               <RoundIcon
-                icon={ChatIcon}
+                icon={CoinsIcon}
                 iconColorClass="text-teal-500 dark:text-teal-100"
                 bgColorClass="bg-teal-100 dark:bg-teal-500"
                 className="mr-4"

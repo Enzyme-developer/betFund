@@ -3,21 +3,22 @@ import test from "../../assets/phase.png";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { PlayIcon, Home, ActivityIcon, User } from "lucide-react";
 
 const routes = [
   {
     path: "/dashboard",
-    icon: test,
+    icon: Home,
     name: "Dashboard",
   },
   {
     path: "/bet",
-    icon: test,
+    icon: PlayIcon,
     name: "Bet",
   },
   {
-    path: "/accound",
-    icon: test,
+    path: "/account",
+    icon: User,
     name: "Account",
   },
 ];
@@ -40,12 +41,7 @@ function SidebarContent() {
               pathname == route.path ? "bg-primary font-semibold text-black" : ""
             }`}
           >
-            <Image
-              className="w-5 h-5"
-              aria-hidden="true"
-              src={route.icon}
-              alt={route.path}
-            />
+            <route.icon className="w-6 h-6" />
             <Link href={route.path}>{route.name}</Link>
           </div>
         ))}
